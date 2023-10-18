@@ -1,4 +1,5 @@
 import { TicketStatus } from '@prisma/client';
+import redis from '../config/redis';
 import { invalidDataError, notFoundError } from '@/errors';
 import { cannotListHotelsError } from '@/errors/cannot-list-hotels-error';
 import { enrollmentRepository, hotelRepository, ticketsRepository } from '@/repositories';
@@ -20,8 +21,15 @@ async function validateUserBooking(userId: number) {
 async function getHotels(userId: number) {
   await validateUserBooking(userId);
 
+  const cachedHotels = await redis.get('hotels');
+  if (cachedHotels) {
+    return JSON.parse(cachedHotels);
+  }
   const hotels = await hotelRepository.findHotels();
+
   if (hotels.length === 0) throw notFoundError();
+
+  await redis.set('hotels', JSON.stringify(hotels));
 
   return hotels;
 }
