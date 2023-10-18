@@ -22,8 +22,19 @@ async function getFirstEvent(): Promise<GetFirstEventResult> {
 }
 
 async function isCurrentEventActive(): Promise<boolean> {
-  const event = await eventRepository.findFirst();
-  if (!event) return false;
+  const cachedEvent = await redis.get('firstEvent');
+
+  let event;
+
+  if (cachedEvent) {
+    event = JSON.parse(cachedEvent);
+  } else {
+    event = await eventRepository.findFirst();
+
+    if (!event) return false;
+
+    await redis.set('firstEvent', JSON.stringify(event));
+  }
 
   const now = dayjs();
   const eventStartsAt = dayjs(event.startsAt);
