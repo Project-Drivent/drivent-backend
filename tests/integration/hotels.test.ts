@@ -7,6 +7,7 @@ import { createEnrollmentWithAddress, createPayment, createTicket, createTicketT
 import { cleanDb, generateValidToken } from '../helpers';
 import { createHotel, createRoomWithHotelId } from '../factories/hotels-factory';
 import app, { init } from '@/app';
+import redis from '@/config/redis';
 
 beforeAll(async () => {
   await init();
@@ -70,6 +71,8 @@ describe('GET /hotels', () => {
       const ticket = await createTicket(enrollment.id, ticketType.id, TicketStatus.PAID);
       await createPayment(ticket.id, 10000);
 
+      await redis.del('hotels');
+
       const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
       expect(response.status).toEqual(httpStatus.NOT_FOUND);
     });
@@ -121,6 +124,7 @@ describe('GET /hotels', () => {
       await createPayment(ticket.id, ticketType.price);
 
       const createdHotel = await createHotel();
+      await redis.set('hotels', JSON.stringify([createdHotel]));
 
       const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
 

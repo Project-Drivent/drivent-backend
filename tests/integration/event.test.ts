@@ -3,10 +3,12 @@ import supertest from 'supertest';
 import { createEvent } from '../factories';
 import { cleanDb } from '../helpers';
 import app, { init } from '@/app';
+import redis from '@/config/redis';
 
 beforeAll(async () => {
   await init();
   await cleanDb();
+  await redis.flushAll();
 });
 
 const server = supertest(app);
