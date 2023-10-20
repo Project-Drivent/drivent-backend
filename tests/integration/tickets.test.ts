@@ -4,7 +4,7 @@ import httpStatus from 'http-status';
 import * as jwt from 'jsonwebtoken';
 import supertest from 'supertest';
 import { createEnrollmentWithAddress, createUser, createTicketType, createTicket } from '../factories';
-import { cleanDb, generateValidToken } from '../helpers';
+import { cleanDb, cleanCache, generateValidToken } from '../helpers';
 import { prisma } from '@/config';
 import app, { init } from '@/app';
 
@@ -14,6 +14,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await cleanDb();
+  await cleanCache();
 });
 
 const server = supertest(app);

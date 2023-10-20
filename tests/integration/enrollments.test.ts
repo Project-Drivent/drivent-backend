@@ -6,13 +6,14 @@ import * as jwt from 'jsonwebtoken';
 import supertest from 'supertest';
 
 import { createEnrollmentWithAddress, createUser, createhAddressWithCEP } from '../factories';
-import { cleanDb, generateValidToken } from '../helpers';
+import { cleanDb, cleanCache, generateValidToken } from '../helpers';
 import { prisma } from '@/config';
 import app, { init } from '@/app';
 
 beforeAll(async () => {
   await init();
   await cleanDb();
+  await cleanCache();
 });
 
 const server = supertest(app);
