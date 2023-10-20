@@ -19,7 +19,6 @@
     "test:watch": "jest --watch --passWithNoTests --runInBand",
     "test:load-envs": "dotenv -e .env.test",
     "test:seed": "npm run test:load-envs prisma db seed",
-    "load-test-hotels": "autocannon -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjE2ODUsImlhdCI6MTY5NzY2MTgxM30.op9l4JqqY0rNc6nkKSMr6XVsnPv6FBk7-aEG7A9seRU' http://localhost:5000/hotels",
     "dev:load-envs": "dotenv -e .env.development",
     "dev:migration:run": "npm run dev:load-envs prisma migrate deploy",
     "dev:migration:generate": "npm run dev:load-envs prisma migrate dev",
@@ -87,9 +86,9 @@
     "express": "^4.18.1",
     "express-async-errors": "^3.1.1",
     "http-status": "^1.5.2",
+    "ioredis": "^5.3.2",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
-    "redis": "^4.6.10",
     "reflect-metadata": "^0.1.13"
   }
 }

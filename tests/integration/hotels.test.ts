@@ -3,11 +3,13 @@ import httpStatus from 'http-status';
 import faker from '@faker-js/faker';
 import * as jwt from 'jsonwebtoken';
 import { TicketStatus } from '@prisma/client';
+import RedisClient from 'ioredis';
 import { createEnrollmentWithAddress, createPayment, createTicket, createTicketType, createUser } from '../factories';
 import { cleanDb, generateValidToken } from '../helpers';
 import { createHotel, createRoomWithHotelId } from '../factories/hotels-factory';
 import app, { init } from '@/app';
-import redis from '@/config/redis';
+
+const redis = new RedisClient();
 
 beforeAll(async () => {
   await init();
@@ -124,7 +126,6 @@ describe('GET /hotels', () => {
       await createPayment(ticket.id, ticketType.price);
 
       const createdHotel = await createHotel();
-      await redis.set('hotels', JSON.stringify([createdHotel]));
 
       const response = await server.get('/hotels').set('Authorization', `Bearer ${token}`);
 

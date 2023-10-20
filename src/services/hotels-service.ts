@@ -1,8 +1,10 @@
 import { TicketStatus } from '@prisma/client';
-import redis from '../config/redis';
+import RedisClient from 'ioredis';
 import { invalidDataError, notFoundError } from '@/errors';
 import { cannotListHotelsError } from '@/errors/cannot-list-hotels-error';
 import { enrollmentRepository, hotelRepository, ticketsRepository } from '@/repositories';
+
+const redis = new RedisClient();
 
 async function validateUserBooking(userId: number) {
   const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);

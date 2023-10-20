@@ -1,9 +1,11 @@
 import { Event } from '@prisma/client';
 import dayjs from 'dayjs';
+import RedisClient from 'ioredis';
 import { notFoundError } from '@/errors';
 import { eventRepository } from '@/repositories';
 import { exclude } from '@/utils/prisma-utils';
-import redis from '@/config/redis';
+
+const redis = new RedisClient();
 
 async function getFirstEvent(): Promise<GetFirstEventResult> {
   const cachedEvent = await redis.get('firstEvent');
@@ -15,7 +17,7 @@ async function getFirstEvent(): Promise<GetFirstEventResult> {
   if (!event) throw notFoundError();
 
   const eventInfo = exclude(event, 'createdAt', 'updatedAt');
-  await redis.set('firstEvent', JSON.stringify(eventInfo));
+  await redis.set('firstEvent', JSON.stringify(eventInfo), 'EX', 3600);
   return eventInfo;
 }
 
