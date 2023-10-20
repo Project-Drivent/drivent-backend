@@ -13,7 +13,7 @@ import {
   createRoomWithHotelId,
   createBooking,
 } from '../factories';
-import { cleanDb, generateValidToken } from '../helpers';
+import { cleanDb, cleanCache, generateValidToken } from '../helpers';
 import app, { init } from '@/app';
 
 beforeAll(async () => {
@@ -22,6 +22,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await cleanDb();
+  await cleanCache();
 });
 
 const server = supertest(app);

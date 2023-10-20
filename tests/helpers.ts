@@ -1,9 +1,15 @@
 import * as jwt from 'jsonwebtoken';
 import { User } from '@prisma/client';
+import RedisClient from 'ioredis';
 import { createUser } from './factories';
 import { createSession } from './factories/sessions-factory';
 import { prisma } from '@/config';
 
+const redis = new RedisClient();
+
+export async function cleanCache(): Promise<void> {
+  await redis.flushall();
+}
 export async function cleanDb() {
   await prisma.address.deleteMany({});
   await prisma.payment.deleteMany({});

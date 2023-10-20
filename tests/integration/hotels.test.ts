@@ -5,7 +5,7 @@ import * as jwt from 'jsonwebtoken';
 import { TicketStatus } from '@prisma/client';
 import RedisClient from 'ioredis';
 import { createEnrollmentWithAddress, createPayment, createTicket, createTicketType, createUser } from '../factories';
-import { cleanDb, generateValidToken } from '../helpers';
+import { cleanDb, cleanCache, generateValidToken } from '../helpers';
 import { createHotel, createRoomWithHotelId } from '../factories/hotels-factory';
 import app, { init } from '@/app';
 
@@ -17,6 +17,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await cleanDb();
+  await cleanCache();
 });
 
 const server = supertest(app);

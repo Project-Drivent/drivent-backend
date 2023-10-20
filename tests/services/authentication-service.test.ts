@@ -1,6 +1,6 @@
 import faker from '@faker-js/faker';
 import { createUser } from '../factories';
-import { cleanDb } from '../helpers';
+import { cleanDb, cleanCache } from '../helpers';
 import { prisma } from '@/config';
 import { init } from '@/app';
 import { authenticationService } from '@/services';
@@ -9,6 +9,7 @@ import { invalidCredentialsError } from '@/errors';
 beforeAll(async () => {
   await init();
   await cleanDb();
+  await cleanCache();
 });
 
 describe('signIn', () => {

@@ -1,7 +1,7 @@
 import faker from '@faker-js/faker';
 import bcrypt from 'bcrypt';
 import { createUser as createUserSeed, createEvent as createEventSeed } from '../factories';
-import { cleanDb } from '../helpers';
+import { cleanDb, cleanCache } from '../helpers';
 import { init } from '@/app';
 import { prisma } from '@/config';
 import { userService } from '@/services';
@@ -10,6 +10,7 @@ import { duplicatedEmailError } from '@/errors';
 beforeAll(async () => {
   await init();
   await cleanDb();
+  await cleanCache();
 });
 
 describe('createUser', () => {
