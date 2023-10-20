@@ -1,14 +1,16 @@
 import httpStatus from 'http-status';
 import supertest from 'supertest';
+import RedisClient from 'ioredis';
 import { createEvent } from '../factories';
 import { cleanDb } from '../helpers';
 import app, { init } from '@/app';
-import redis from '@/config/redis';
+
+const redis = new RedisClient();
 
 beforeAll(async () => {
   await init();
   await cleanDb();
-  await redis.flushAll();
+  await redis.flushall();
 });
 
 const server = supertest(app);
