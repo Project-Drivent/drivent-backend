@@ -5,7 +5,7 @@ import { notFoundError } from '@/errors';
 import { eventRepository } from '@/repositories';
 import { exclude } from '@/utils/prisma-utils';
 
-const redis = new RedisClient();
+const redis = new RedisClient(process.env.REDIS_URL);
 
 async function getFirstEvent(): Promise<GetFirstEventResult> {
   const cachedEvent = await redis.get('firstEvent');

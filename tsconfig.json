@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "es2020",
     "module": "commonjs",
-    "outDir": "dist",
+    "outDir": "./dist",
     "noImplicitAny": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
@@ -18,5 +18,5 @@
       }
     ]
   },
-  "include": ["src", "tests"]
+  "include": ["src"]
 }

@@ -10,6 +10,11 @@ beforeAll(async () => {
   await cleanCache();
 });
 
+afterAll(async () => {
+  await cleanDb();
+  await cleanCache();
+});
+
 const server = supertest(app);
 
 describe('GET /event', () => {

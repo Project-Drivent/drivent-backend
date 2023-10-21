@@ -4,7 +4,7 @@ import { invalidDataError, notFoundError } from '@/errors';
 import { cannotListHotelsError } from '@/errors/cannot-list-hotels-error';
 import { enrollmentRepository, hotelRepository, ticketsRepository } from '@/repositories';
 
-const redis = new RedisClient();
+const redis = new RedisClient(process.env.REDIS_URL);
 
 async function validateUserBooking(userId: number) {
   const enrollment = await enrollmentRepository.findWithAddressByUserId(userId);

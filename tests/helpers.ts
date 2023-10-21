@@ -5,7 +5,7 @@ import { createUser } from './factories';
 import { createSession } from './factories/sessions-factory';
 import { prisma } from '@/config';
 
-const redis = new RedisClient();
+const redis = new RedisClient(process.env.REDIS_URL);
 
 export async function cleanCache(): Promise<void> {
   await redis.flushall();

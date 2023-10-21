@@ -9,7 +9,7 @@ import { cleanDb, cleanCache, generateValidToken } from '../helpers';
 import { createHotel, createRoomWithHotelId } from '../factories/hotels-factory';
 import app, { init } from '@/app';
 
-const redis = new RedisClient();
+const redis = new RedisClient(process.env.REDIS_URL);
 
 beforeAll(async () => {
   await init();
