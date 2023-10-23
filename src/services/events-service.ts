@@ -17,7 +17,7 @@ async function getFirstEvent(): Promise<GetFirstEventResult> {
   if (!event) throw notFoundError();
 
   const eventInfo = exclude(event, 'createdAt', 'updatedAt');
-  await redis.set('firstEvent', JSON.stringify(eventInfo));
+  await redis.set('firstEvent', JSON.stringify(eventInfo), 'EX', 3600);
   return eventInfo;
 }
 
