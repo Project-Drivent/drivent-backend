@@ -58,27 +58,40 @@ async function findOrCreateUser(email: string) {
 
 async function fetchUserEmail(token: string) {
   const GITHUB_EMAILS_ENDPOINT = 'https://api.github.com/user/emails';
-  const response = await axios.get(GITHUB_EMAILS_ENDPOINT, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
 
-  const email = response.data[0] ? response.data[0].email : null;
+  try {
+    const response = await axios.get(GITHUB_EMAILS_ENDPOINT, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  return email;
+    if (response.status === 200) {
+      const email = response.data[0] ? response.data[0].email : null;
+      return email;
+    } else {
+      console.error(`Recebido status HTTP não esperado: ${response.status}`);
+      return null;
+    }
+  } catch (error) {
+    console.error('Erro de rede:', error.message);
+    return null;
+  }
 }
 
 async function signInGithub(code: string): Promise<SignInResult> {
   const response = await axios.post(`https://github.com/login/oauth/access_token`, {
-    client_id: process.env.CLIENT_ID,
-    client_secret: process.env.CLIENT_SECRET,
+    grant_type: 'authorization_code',
+    client_id: process.env.GITHUB_CLIENT_ID,
+    client_secret: process.env.GITHUB_CLIENT_SECRET,
     code,
   });
 
   const tokenGithub = response.data.split('&')[0].split('=')[1];
+
   const email = await fetchUserEmail(tokenGithub);
-  console.log('user', email);
+
+  // console.log('user email', email);
 
   const user = await findOrCreateUser(email);
 
