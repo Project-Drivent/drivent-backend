@@ -71,8 +71,8 @@ async function fetchUserEmail(token: string) {
 
 async function signInGithub(code: string): Promise<SignInResult> {
   const response = await axios.post(`https://github.com/login/oauth/access_token`, {
-    client_id: process.env.GITHUB_CLIENT_ID,
-    client_secret: process.env.GITHUB_CLIENT_SECRET,
+    client_id: process.env.CLIENT_ID,
+    client_secret: process.env.CLIENT_SECRET,
     code,
   });
 
