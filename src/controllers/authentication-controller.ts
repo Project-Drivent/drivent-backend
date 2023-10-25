@@ -9,3 +9,11 @@ export async function singInPost(req: Request, res: Response) {
 
   return res.status(httpStatus.OK).send(result);
 }
+
+export async function singInPostGithub(req: Request, res: Response) {
+  const { code } = req.body;
+
+  const result = await authenticationService.signInGithub(code);
+
+  return res.status(httpStatus.OK).send(result);
+}
